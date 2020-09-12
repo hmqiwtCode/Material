@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -13,6 +17,9 @@ public class FloatButton extends AppCompatActivity {
     private FloatingActionButton btnAdd, btnAddUser, btnAddContact;
     private TextView tvAddContact, tvAddPerson;
     private boolean isOpen;
+
+    private Animation fabOpenAnimation, fabCloseAnimation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +38,17 @@ public class FloatButton extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isOpen){
-                    btnAddUser.setVisibility(View.GONE);
-                    btnAddContact.setVisibility(View.GONE);
-                    tvAddContact.setVisibility(View.GONE);
-                    tvAddPerson.setVisibility(View.GONE);
+                    loadAnimation();
+                    btnAddUser.setAnimation(fabCloseAnimation);
+                    btnAddContact.setAnimation(fabCloseAnimation);
+                    tvAddContact.setVisibility(View.INVISIBLE);
+                    tvAddPerson.setVisibility(View.INVISIBLE);
 
                     isOpen = false;
                 }else{
-                    btnAddUser.setVisibility(View.VISIBLE);
-                    btnAddContact.setVisibility(View.VISIBLE);
+                    loadAnimation();
+                    btnAddUser.setAnimation(fabOpenAnimation);
+                    btnAddContact.setAnimation(fabOpenAnimation);
                     tvAddContact.setVisibility(View.VISIBLE);
                     tvAddPerson.setVisibility(View.VISIBLE);
                     isOpen = true;
@@ -47,5 +56,10 @@ public class FloatButton extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loadAnimation(){
+        fabOpenAnimation = AnimationUtils.loadAnimation(FloatButton.this,R.anim.fab_open);
+        fabCloseAnimation = AnimationUtils.loadAnimation(FloatButton.this,R.anim.fab_close);
     }
 }
